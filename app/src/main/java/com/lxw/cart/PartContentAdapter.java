@@ -23,6 +23,7 @@ public class PartContentAdapter extends BaseQuickAdapter<PartContent, BaseViewHo
 
     @Override
     protected void convert(BaseViewHolder helper, PartContent item) {
-        helper.setText(R.id.tv_name, item.getName());
+        helper.setText(R.id.tv_title, item.getName());
+        helper.addOnClickListener(R.id.iv_add).addOnClickListener(R.id.iv_remove);
     }
 }

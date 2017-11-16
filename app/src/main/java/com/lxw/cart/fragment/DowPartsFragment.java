@@ -25,6 +25,7 @@ public class DowPartsFragment extends Fragment {
     private String[] menuList = new String[]{"润滑油", "离合器", "雨刷器", "活塞", "连杆", "气门", "散热器", "刹车片", "配电盒", "节温器", "分动器", "万向节", "取力器"};
     private List<CategoryBean> categoryList = new ArrayList<>();
     private List<PartContent> partList = new ArrayList<>();
+    private ConvertInter converInter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -55,7 +56,7 @@ public class DowPartsFragment extends Fragment {
         rvMenu.setLayoutManager(new LinearLayoutManager(this.getActivity()));
         rvMenu.setAdapter(categoryAdapter);
 
-        final PartContentAdapter partContentAdapter = new PartContentAdapter(R.layout.item_part_content, partList);
+        final PartContentAdapter partContentAdapter = new PartContentAdapter(R.layout.item_shop_menu, partList);
         rvContent.setLayoutManager(new LinearLayoutManager(this.getActivity()));
         rvContent.setAdapter(partContentAdapter);
         categoryAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
@@ -88,6 +89,36 @@ public class DowPartsFragment extends Fragment {
                 rvMenu.scrollToPosition(pos);
             }
         });
+        partContentAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                switch (view.getId()) {
+                    case R.id.iv_add:
+                        if (converInter!=null) {
+                            converInter.add(view,position);
+                        }
+                        break;
+                    case R.id.iv_remove:
+                        if (converInter!=null) {
+                            converInter.remove(view,position);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+
+    }
+
+    public void setOnConvertInter(ConvertInter converInter) {
+        this.converInter = converInter;
+    }
+
+    public interface ConvertInter {
+        void add(View view, int position);
+
+        void remove(View view, int position);
     }
 
     public List<PartContent> getPartDetail(int id, int count) {
